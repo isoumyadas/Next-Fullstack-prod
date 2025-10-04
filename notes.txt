@@ -1,0 +1,1 @@
+// Always start with models create a structure of your app.
