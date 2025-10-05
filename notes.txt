@@ -1,1 +1,4 @@
 // Always start with models create a structure of your app.
+
+1. Whenever we do (auth) as a folder name we give them as group. in that their will be multiple folders / also the auth will be not named as route 
+eg: route/sign-in    instead it will be only /sign-in
