@@ -26,3 +26,8 @@ declare module "next-auth/jwt" {
     username?: string;
   }
 }
+
+// why we need to do this?
+// we have to do this because TypeScript needs to know the exact "shape" of your objects. By default, Auth.js only defines the Session and User types with standard properties like name, email, and image. It has no knowledge of the custom data you add from your database, such as _id or username.
+
+// You are essentially telling TypeScript, "In my project, the Session object will also contain these extra fields."

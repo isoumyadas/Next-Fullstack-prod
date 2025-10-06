@@ -29,3 +29,44 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
+//========================== withAuth example ================================
+
+// import withAuth from "next-auth/middleware";
+// import { NextResponse } from "next/server";
+
+// export default withAuth(
+//   function middleware() {
+//     return NextResponse.next();
+//   },
+//   {
+//     callbacks: {
+//       authorized: ({ token, req }) => {
+//         const { pathname } = req.nextUrl;
+
+//         // allowed
+//         if (
+//           pathname.startsWith("/sign-in") ||
+//           pathname.startsWith("/sign-up") ||
+//           pathname.startsWith("/verify") ||
+//           pathname.startsWith("/")
+//         ) {
+//           return true;
+//         }
+
+//         // public
+//         // if() {
+//         //   return true
+//         // }
+
+//         return !!token;
+//       },
+//     },
+//   }
+// );
+
+// export const config = {
+//   matcher: [
+
+//   ]
+// }
