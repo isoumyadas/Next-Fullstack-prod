@@ -1,6 +1,6 @@
 // You can put this file name as auth.ts or options. you can put this file in lib folder or in the src folder.
 
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import bcrypt from "bcrypt";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
@@ -58,11 +58,12 @@ export const { handlers, auth } = NextAuth({
             throw new Error("Please verify your email before login");
           }
 
+          // Explicitly var to strings for the issue geting on credentials.password
+
+          const passFromCred = String(credentials.password);
+
           // Checking the password
-          const isValidPass = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
+          const isValidPass = await bcrypt.compare(passFromCred, user.password);
 
           if (!isValidPass) {
             throw new Error("Invalid password");

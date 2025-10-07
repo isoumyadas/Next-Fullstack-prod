@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-export { default } from "next-auth/middleware";
+// export { default } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
 
 // See "Matching Paths" below to learn more
