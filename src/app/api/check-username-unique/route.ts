@@ -41,7 +41,7 @@ export async function GET(req: Request) {
       console.error("username error:: ", usernameErrors);
 
       return Response.json(
-        { success: false, message: "Invalid query parameters" },
+        { success: false, message: "ZOD error: Invalid query parameters" },
         { status: 400 }
       );
     }

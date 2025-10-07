@@ -18,7 +18,10 @@ export async function POST(req: Request) {
       const verifyCodeErrors = result.error.format().code?._errors || [];
       console.error("verifyCode error:: ", verifyCodeErrors);
       return Response.json(
-        { success: false, message: "Verification Code is not Correct" },
+        {
+          success: false,
+          message: "ZOD error: Verification Code is not Correct",
+        },
         { status: 400 }
       );
     }
