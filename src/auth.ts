@@ -78,9 +78,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  // pages: {
-  //   signIn: "/sign-in", // you are now responsible for creating the actual login page. You must create a file at app/login/page.tsx that contains your custom login form.
-  // },
+  pages: {
+    signIn: "/sign-in", // you are now responsible for creating the actual login page. You must create a file at app/login/page.tsx that contains your custom login form.
+  },
   session: {
     strategy: "jwt", // This mean i want to keep my session saved in jwt.
     maxAge: 30 * 24 * 60 * 60,

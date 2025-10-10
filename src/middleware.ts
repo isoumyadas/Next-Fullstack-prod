@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
     secret: secret,
   });
 
-  console.log("token: ", token);
+  console.log("token while login or loggedIn: ", token);
 
   const url = request.nextUrl;
 
