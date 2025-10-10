@@ -11,10 +11,10 @@ if (!process.env.AUTH_GITHUB_ID || !process.env.AUTH_GITHUB_SECRET) {
   throw new Error("Missing GitHub OAuth environment variables");
 }
 
-// You can also use NextAuthOptions
+// You can also use NextAuthOption
 // export const authOptions: NextAuthOptions= {}
 
-export const { handlers, auth } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Github({
       clientId: process.env.AUTH_GITHUB_ID,
@@ -71,19 +71,21 @@ export const { handlers, auth } = NextAuth({
 
           return user;
         } catch (error: any) {
-          throw new Error(error);
+          // This is a security risk. If a database error occurs, this could leak sensitive information about your database structure or connection to the client. You should always throw a generic error message from the authorize function.
+          console.error("Authorize error: ", error);
+          throw new Error("An error occurred during authentication.");
         }
       },
     }),
   ],
-  pages: {
-    signIn: "/sign-in",
-  },
+  // pages: {
+  //   signIn: "/sign-in", // you are now responsible for creating the actual login page. You must create a file at app/login/page.tsx that contains your custom login form.
+  // },
   session: {
     strategy: "jwt", // This mean i want to keep my session saved in jwt.
     maxAge: 30 * 24 * 60 * 60,
   },
-  secret: process.env.NEXTAUTH_SECRET, // You can use AUTH_SECRET in your envfile which is picked automatically.
+  // secret: process.env.AUTH_SECRET, // You can use AUTH_SECRET in your envfile which is picked automatically.
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
