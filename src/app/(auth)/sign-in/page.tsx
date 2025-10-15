@@ -35,7 +35,7 @@ export default function SignIn() {
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { indentifier: "", password: "" },
+    defaultValues: { email: "", password: "" },
   });
 
   // submit method
@@ -43,12 +43,12 @@ export default function SignIn() {
   const onLoginSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsSubmitting(true);
 
-    console.log("data =>>>>>>>>>>> ", data.indentifier);
+    console.log("data =>>>>>>>>>>> ", data.email);
     console.log("data 2 =>>>>>>>>>>> ", data.password);
 
     // The signIn function returns a result object, it doesn't throw an error on failure.
     const res = await signIn("credentials", {
-      identifier: data.indentifier,
+      email: data.email,
       password: data.password,
       redirect: false,
     });
@@ -84,7 +84,7 @@ export default function SignIn() {
             {/* email */}
             <FormField
               control={form.control}
-              name="indentifier"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
