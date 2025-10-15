@@ -8,6 +8,9 @@ export async function POST(req: Request) {
   try {
     const { username, verifyCode } = await req.json();
 
+    console.log("verifyCode:::::::: ", verifyCode);
+    console.log("username:::::::: ", username);
+
     // decode the component
     const decodedUsername = decodeURIComponent(username);
 
@@ -20,7 +23,7 @@ export async function POST(req: Request) {
       return Response.json(
         {
           success: false,
-          message: "ZOD error: Verification Code is not Correct",
+          message: verifyCodeErrors,
         },
         { status: 400 }
       );
