@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   //   const session = await getServerSession(auth);
 
   const session = await auth();
-  console.log("In accept-messages - For getServerSession:: ", session);
+  // console.log("In get-messages - For getServerSession:: ", session);
 
   // const user: User = session?.user; // You can only do this with the next-auth version less than ^5.
 
@@ -31,27 +31,27 @@ export async function GET(req: Request) {
   const userId = new mongoose.Types.ObjectId(session.user._id);
 
   try {
-    const user = await UserModel.aggregate([
+    const userMessage = await UserModel.aggregate([
       { $match: { _id: userId } },
       { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]);
 
-    if (!user || user.length === 0) {
+    if (!userMessage || userMessage.length === 0) {
       return Response.json(
         {
           success: false,
-          message: "User not found",
+          message: "No Messages Yet",
         },
-        { status: 401 }
+        { status: 500 }
       );
     }
 
     return Response.json(
       {
         success: true,
-        messages: user[0].messages,
+        messages: userMessage[0].messages,
       },
       { status: 200 }
     );

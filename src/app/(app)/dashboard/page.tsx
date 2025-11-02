@@ -35,7 +35,7 @@ export default function Dashboard() {
   const acceptMessages = watch("acceptMessages");
 
   const fetchAcceptMessage = useCallback(async () => {
-    setIsSwitching(true);
+    setIsLoading(true);
 
     try {
       const res = await axios.get<ApiResponse>("/api/accept-messages");
@@ -54,7 +54,6 @@ export default function Dashboard() {
   const fetchMessages = useCallback(
     async (refresh: boolean = false) => {
       setIsLoading(true);
-      setIsSwitching(false);
 
       try {
         const res = await axios.get<ApiResponse>("/api/get-messages");
@@ -73,7 +72,7 @@ export default function Dashboard() {
         setIsSwitching(false);
       }
     },
-    [setIsLoading, setMessages]
+    [setIsLoading, setMessages, setIsSwitching]
   );
 
   // Fetch initial state from the server
@@ -83,15 +82,15 @@ export default function Dashboard() {
     fetchMessages();
 
     fetchAcceptMessage();
-  }, [session, setValue, fetchAcceptMessage, fetchMessages]);
+  }, [session, fetchAcceptMessage, fetchMessages]);
 
   // Handle switch change
-  const handleSwitchChange = async () => {
+  const handleSwitchChange = async (checked: boolean) => {
     try {
       const response = await axios.post<ApiResponse>("/api/accept-messages", {
-        acceptMessages: !acceptMessages,
+        acceptMessages: checked,
       });
-      setValue("acceptMessages", !acceptMessages);
+      setValue("acceptMessages", checked);
       toast.success(response.data.message);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -119,7 +118,7 @@ export default function Dashboard() {
 
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+      <h1 className="text-4xl font-bold mb-4">{`${username}'s Dashboard`}</h1>
 
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{" "}
@@ -136,10 +135,14 @@ export default function Dashboard() {
 
       <div className="mb-4">
         <Switch
-          {...register("acceptMessages")}
+          // When you use ...register it completely ignores the onCheckedChange handler. because ...register func automatically adds its own onChange handler.
+          // The ...register doesnot pass the simple boolean. It is designed for standard HTML inputs, so it passes a full commplex React Event object.
+          // That's why above in handleSwitchChange you used the acceptingMessages: !acceptingMessages. and same for setValue. You are not actually passing the checked param in the handler function.
+          // {...register("acceptMessages")}
           checked={acceptMessages}
           onCheckedChange={handleSwitchChange}
           disabled={isSwitching}
+          className="cursor-pointer"
         />
         <span className="ml-2">
           Accept Messages: {acceptMessages ? "On" : "Off"}

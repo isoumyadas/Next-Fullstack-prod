@@ -17,6 +17,9 @@ async function dbConnect(): Promise<void> {
   try {
     const db = await mongoose.connect(process.env.MONGODB_URI || "", {}); // here in {} we can pass other optional arguments & conosle log this variable (db)
 
+    // console.log(" db logs:: ", db);
+    // console.log(" db connection logs:: ", db.connections);
+
     // conosle log db.connections to check the values & db variable too...
     connection.isConnected = db.connections[0].readyState;
 

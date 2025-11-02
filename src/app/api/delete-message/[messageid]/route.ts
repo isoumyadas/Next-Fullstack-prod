@@ -4,9 +4,10 @@ import UserModel from "@/models/User";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { messageid: string } }
+  { params }: { params: { messageid: string } | Promise<{ messageid: string }> }
 ) {
-  const messageId = params.messageid;
+  const resolvedParams = await params;
+  const messageId = resolvedParams.messageid;
 
   await dbConnect();
 
@@ -41,7 +42,7 @@ export async function DELETE(
 
     return Response.json(
       {
-        success: false,
+        success: true,
         message: "Message Deleted",
       },
       { status: 200 }

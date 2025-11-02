@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   //   const session = await getServerSession(auth);
 
   const session = await auth();
-  console.log("In accept-messages - For getServerSession:: ", session);
+  console.log("In accept-messages POST - For getServerSession:: ", session);
 
   // const user: User = session?.user; // You can only do this with the next-auth version less than ^5.
 
@@ -28,12 +28,12 @@ export async function POST(req: Request) {
 
   const userId = session.user._id;
 
-  const { accpetMessages } = await req.json();
+  const { acceptMessages } = await req.json();
 
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      { isAcceptingMessages: accpetMessages },
+      { $set: { isAcceptingMessages: acceptMessages } },
       { new: true }
     );
 
@@ -75,7 +75,7 @@ export async function GET(req: Request) {
   //   const session = await getServerSession(auth);
 
   const session = await auth();
-  console.log("In accept-messages - For getServerSession:: ", session);
+  console.log("In accept-messages GET - For getServerSession:: ", session);
 
   // const user: User = session?.user; // You can only do this with the next-auth version less than ^5.
   if (!session || !session.user) {

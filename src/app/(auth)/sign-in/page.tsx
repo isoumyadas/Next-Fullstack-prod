@@ -56,7 +56,7 @@ export default function SignIn() {
     setIsSubmitting(false);
 
     if (res?.error) {
-      toast.error("Invalid identifier or password", {
+      toast.error("Invalid email or password", {
         style: { background: "red" },
       });
     } else if (res?.ok) {
